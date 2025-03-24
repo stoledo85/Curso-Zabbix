@@ -1,0 +1,11 @@
+// Aula 6 - Alteração de Idioma
+
+# apt install locales
+
+# dnf install glibc-langpack-en
+
+# locale -a
+
+
+
+

@@ -1,0 +1,81 @@
+// Aula 2 - Instalação via pacotes no Ubuntu Server
+
+Pré-requesitos:
+
+!!! RESPEITEM AS VERSÕES USADAS NESSA AULA !!!
+
+➔ Sistema Linux Ubuntu Server 24.04 LTS
+➔ Zabbix 7.0 LTS
+➔ 2 CPU
+➔ 4 GB RAM
+
+!!! RESPEITE AS VERSÕES USADAS NESSA AULA !!!
+
+Link do repositório:
+
+https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/
+# sudo apt update
+
+# sudo apt install mariadb-server mariadb-client mariadb-backup
+
+# systemctl enable --now mariadb
+
+# sudo mariadb-secure-installation
+
+vim /etc/mysql/mariadb.conf.d/50-server.cnf
+
+[server]
+innodb_buffer_pool_size=3G
+join_buffer_size=2M
+innodb_log_file_size=1G
+
+# sudo systemctl restart mariadb
+
+# mariadb -uroot -p
+
+> SHOW VARIABLES LIKE 'innodb_buffer_pool_size';
+
+mysql> create database zabbix character set utf8 collate utf8_bin;
+
+mysql> grant all privileges on zabbix.* to zabbix@localhost identified by 'zabbix';
+
+mysql> quit;
+
+# cd /usr/src
+
+# wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.0+debian12_all.deb
+
+# dpkg -i zabbix-release_latest_7.0+debian12_all.deb
+
+# apt update 
+
+# apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent
+
+# apt install locate
+
+
+# zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mariadb -uzabbix -p zabbix 
+
+# vim /etc/zabbix/zabbix_server.conf
+
+DBHost=localhost
+DBName=zabbix
+DBUser=zabbix
+DBPassword=zabbix
+AllowUnsupportedDBVersions=1
+
+# locale-gen pt_BR.UTF-8
+
+# systemctl enable --now zabbix-server zabbix-agent apache2
+
+# systemctl status zabbix-server zabbix-agent apache2
+
+# hostname -I
+
+Login: Admin 
+
+Senha: zabbix
+
+
+
+
